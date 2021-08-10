@@ -1,0 +1,89 @@
+<html>
+	<head>
+		<title>RTL Controller</title>
+		<style>
+			body {
+			    margin: 0;
+			    padding: 0;
+			    background-color: #a2a2a2;
+			    font-size: 20px;
+			    display: flex;
+			    justify-content: center;
+			    flex-direction: column;
+			    height: 100vh;
+			}
+			.feedback {
+				border: 1px solid black;
+				max-width : 980px;
+				min-width : 400px;
+				background-color: #dadad3;
+				margin: 0 auto;
+			}
+			.feedback .header {
+			 	text-align: center;
+        		padding: 8px;
+        		font-size: 26px;
+        		font-weight: 700;
+        		border-bottom: 1px solid 
+			}
+			.feedback > form {
+				margin-left: 10px;
+				margin-top: 10px;
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+			}
+			.feedback .button {
+				margin-top: 10px;
+				align-self: flex-end;
+				border: 2px solid black;
+				font-weight: 500;
+				font-size: 14;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="feedback">
+			<br>
+			<div class="header">
+				RTL Controller
+			</div>
+			<form method="post" >
+				<span >Camera Delay
+					<input align="right" type="range" min="0" max="{{MAX_FRAME_DELAY}}" value="{{FRAME_DELAY}}" class="slider" id="delay_slider" name="frame_delay">  
+				</span>
+				<span> Delay [frames]: <span id="delay_output_frames">{{FRAME_DELAY}}</span></span>
+				<span>Delay [sec]: <span id="delay_output_sec">{{SEC_DELAY}}</span></span>
+				<br>
+				<span><input type="checkbox" name="flip_horizontal" {{FLIP_HORIZONTAL}}>Flip Image Horizontal</span>
+				<br>
+				<span><input type="checkbox" name="flip_vertical" {{FLIP_VERTICAL}}>Flip Image Vertical</span>
+				<input class="button" type="submit" value="Opdater">
+			</form>
+		</div>
+		<script>
+			var delaySlider = document.getElementById("delay_slider");
+			var delayOutputFrames = document.getElementById("delay_output_frames");
+			var delayOutputSec = document.getElementById("delay_output_sec");
+
+			console.log(delaySlider.value);
+			delayOutputSec.innerHtml = delaySlider.value;
+			delayOutputFrames.innerHtml = "What's going on";
+			delaySlider.oninput = function() {
+				var delay = this.value * 1/30;
+				delayOutputSec.innerHTML = delay.toFixed(2) +  " sec";
+				delayOutputFrames.innerHTML = this.value;
+			}
+			/*
+			function frameToSec(var frameDelay)
+			{
+				var secs = frameDelay * 1/30;
+				return secs.toFixed(2);
+			}
+			*/
+
+
+		</script>
+	</body>
+</html>
+

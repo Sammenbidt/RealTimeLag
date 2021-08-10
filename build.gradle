@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'org.robovm:robovm-gradle-plugin:1.12.0'
+    }
+}
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+
+    version = '1.0'
+    ext {
+        appName = "RealTimeLag"
+        gdxVersion = '1.9.2'
+        roboVMVersion = '1.12.0'
+        box2DLightsVersion = '1.4'
+        ashleyVersion = '1.7.0'
+        aiVersion = '1.8.0'
+        nanoVersion = '2.1.0'
+        nanoWebsocketVersion = '2.3.0'
+        nanoWebserverVersion = '2.3.1'
+
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://github.com/NanoHttpd/nanohttpd"}
+    }
+}
+
+project(":desktop") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+}
+
+project(":android") {
+    apply plugin: "android"
+
+    configurations { natives }
+
+    dependencies {
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+        /*
+        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        compile "org.nanohttpd:nanohttpd-websocket:$nanoWebsocketVersion"
+        compile "com.nanohttpd:nanohttpd:$nanoVersion"
+
+        compile "org.nanohttpd:nanohttpd-webserver:$nanoWebserverVersion"
+        */
+    }
+}
+
+project(":core") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.3"
+        compile "com.nanohttpd:nanohttpd:$nanoVersion"
+        /*
+        compile "org.nanohttpd:nanohttpd-websocket:$nanoWebsocketVersion"
+
+
+        compile "org.nanohttpd:nanohttpd-webserver:$nanoWebserverVersion"
+        */
+
+    }
+}
+/*
+project(":ios") {
+    apply plugin: "java"
+    apply plugin: "robovm"
+
+
+    dependencies {
+        compile project(":core")
+        compile "org.robovm:robovm-rt:$roboVMVersion"
+        compile "org.robovm:robovm-cocoatouch:$roboVMVersion"
+        compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+    }
+}
+*/
+tasks.eclipse.doLast {
+    delete ".project"
+}
